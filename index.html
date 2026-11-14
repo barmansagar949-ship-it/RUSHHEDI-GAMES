@@ -88,6 +88,36 @@ button:focus-visible,a:focus-visible,nav button:focus-visible{outline:2px solid 
 #ag .row .go{background:var(--gr);color:#fff;border:0}
 #ag .err{color:#ff8a8a;font-size:13px;min-height:1em}
 
+.card{cursor:pointer}
+.th .ig{position:relative;width:84px;height:84px;border-radius:20px;object-fit:cover;box-shadow:0 6px 18px rgba(0,0,0,.45);border:2px solid rgba(255,255,255,.25)}
+.sl .big.ig{width:220px;height:220px;border-radius:48px;object-fit:cover;opacity:1;border:3px solid rgba(255,255,255,.3)}
+.sl .bt{display:flex;gap:10px;align-self:flex-start}
+.dn.sc{background:rgba(0,0,0,.35);box-shadow:none}
+#gd{position:fixed;inset:0;background:rgba(0,0,0,.78);display:none;align-items:center;justify-content:center;z-index:40;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+#gd.on{display:flex}
+#gd .bx{background:var(--pn);border:1px solid var(--bd);width:100%;max-width:720px;height:100%;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+#gd .bar{position:sticky;top:0;z-index:2;display:flex;justify-content:flex-end;padding:10px 12px;background:var(--pn)}
+#gd .bar button{width:40px;height:40px;border-radius:50%;background:var(--cd);border:1px solid var(--bd);color:var(--tx);display:grid;place-items:center;cursor:pointer;font-size:20px}
+#gd .in{padding:0 22px 28px}
+#gd .gh{display:flex;gap:16px;align-items:center}
+#gd .gi{width:104px;height:104px;border-radius:24px;flex:none;object-fit:cover;display:grid;place-items:center;color:#fff;box-shadow:0 8px 22px rgba(0,0,0,.4)}
+#gd .gi .ic{width:52px;height:52px;stroke-width:1.5}
+#gd h2{margin:0;font:700 34px/1.05 var(--fh);overflow-wrap:anywhere}
+#gd .dv{color:var(--ac2);font-weight:600;margin-top:4px}#gd .ct{color:var(--mu);font-size:13px}
+#gd .gs{display:flex;margin:20px 0;border-top:1px solid var(--bd);border-bottom:1px solid var(--bd)}
+#gd .gs div{flex:1;text-align:center;padding:12px 4px;min-width:0}#gd .gs div+div{border-left:1px solid var(--bd)}
+#gd .gs b{display:flex;align-items:center;justify-content:center;gap:4px;font-size:16px}#gd .gs b .ic{color:#ffb81c;font-size:15px}#gd .gs small{color:var(--mu);font-size:12px}
+#gd .dn{width:100%}
+#gd .shs{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+#gd .shs img{height:300px;width:auto;flex:none;border-radius:14px;border:1px solid var(--bd);cursor:zoom-in;background:var(--bg)}
+#gd h5{margin:24px 0 8px;font:700 22px/1.1 var(--fh)}
+#gd .ab{margin:0;color:#d8d5f5;white-space:pre-line;overflow-wrap:anywhere;line-height:1.6}
+#gd .inf div{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px solid var(--bd);font-size:14px}
+#gd .inf span{color:var(--mu);flex:none}#gd .inf b{font-weight:500;text-align:right;overflow-wrap:anywhere}#gd .inf a{color:var(--ac2)}
+@media(min-width:721px){#gd{padding:24px}#gd .bx{height:auto;max-height:92vh;border-radius:22px}}
+@media(max-width:520px){#gd .shs img{height:240px}#gd h2{font-size:28px}#gd .gi{width:88px;height:88px}}
+#lb{position:fixed;inset:0;background:rgba(0,0,0,.93);display:none;align-items:center;justify-content:center;z-index:50;cursor:zoom-out}
+#lb.on{display:flex}#lb img{max-width:96vw;max-height:92vh;object-fit:contain;border-radius:8px}
 </style>
 </head>
 <body>
@@ -147,6 +177,8 @@ button:focus-visible,a:focus-visible,nav button:focus-visible{outline:2px solid 
   </section>
 </div>
 </div></div>
+<div id="gd" role="dialog" aria-modal="true"><div class="bx" id="gb"></div></div>
+<div id="lb"><img alt=""></div>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
@@ -173,27 +205,63 @@ function navR(){$("nav").innerHTML=CATS.map(c=>`<button data-c="${c[0]}" class="
 $("nav").onclick=e=>{const b=e.target.closest("button");if(!b)return;cat=b.dataset.c;$("q").value="";render()};
 $("va").onclick=()=>{cat="all";render()};
 
+const okImg=v=>/^(data:image\/|https?:\/\/)/i.test(v||"")?v:"";
+const okUrl=v=>/^https?:\/\//i.test(v||"")?v:"";
+const dday=t=>t?new Date(t).toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"}):"";
 function card(g){
-  const u=/^https?:\/\//i.test(g.url||"")?g.url:"#";
-  const rt=g.rating?`${ic("star","f")}<span>${esc(g.rating)}</span>`:`<span>Free download</span>`;
-  return `<div class="card"><div class="th" style="background:${grad(g.title)}">${ic(gic(g))}</div><div class="cb"><h4>${esc(g.title)}</h4><div class="rt">${rt}</div><a class="dn" href="${esc(u)}" target="_blank" rel="noopener noreferrer">${ic("down")}Download</a></div></div>`;
+  const u=okUrl(g.url)||"#",im=okImg(g.icon),sz=g.size?esc(g.size)+" MB":"";
+  const rt=g.rating?`${ic("star","f")}<span>${esc(g.rating)}${sz?" • "+sz:""}</span>`:`<span>${sz?sz+" • ":""}Free download</span>`;
+  return `<div class="card" data-id="${esc(g.id)}" tabindex="0"><div class="th" style="background:${grad(g.title)}">${im?`<img class="ig" src="${esc(im)}" alt="">`:ic(gic(g))}</div><div class="cb"><h4>${esc(g.title)}</h4><div class="rt">${rt}</div><a class="dn" href="${esc(u)}" target="_blank" rel="noopener noreferrer">${ic("down")}Download</a></div></div>`;
 }
 function heroR(){
   clearInterval(timer);const h=$("hero"),s=games.slice(0,4);
   if(!s.length){h.style.background="linear-gradient(135deg,#2a1470,#7b2ff7)";h.innerHTML=`<div class="sl on"><span class="tg">Coming soon</span><h2>Welcome to RUSHHEDI</h2><p>Mere saare games yahan milenge. Jaldi aa rahe hain!</p>${ic("pad","big")}</div>`;return}
-  h.innerHTML=s.map((g,i)=>`<div class="sl ${i?"":"on"}" style="background:${grad(g.title)}"><span class="tg">${esc(g.category||"Free Game")}</span><h2>${esc(g.title)}</h2><p>${esc(g.desc||"Free game. Download karo aur khelo!")}</p><a class="dn" href="${esc(/^https?:\/\//i.test(g.url||"")?g.url:"#")}" target="_blank" rel="noopener noreferrer">${ic("down")}Download Now</a>${ic(gic(g),"big")}</div>`).join("")+
+  h.innerHTML=s.map((g,i)=>{const im=okImg(g.icon);return `<div class="sl ${i?"":"on"}" style="background:${grad(g.title)}"><span class="tg">${esc(g.category||"Free Game")}</span><h2>${esc(g.title)}</h2><p>${esc(g.desc||"Free game. Download karo aur khelo!")}</p><div class="bt"><a class="dn" href="${esc(okUrl(g.url)||"#")}" target="_blank" rel="noopener noreferrer">${ic("down")}Download Now</a><button class="dn sc" data-d="${esc(g.id)}">Details</button></div>${im?`<img class="big ig" src="${esc(im)}" alt="">`:ic(gic(g),"big")}</div>`}).join("")+
   `<div class="ctl"><div class="dots">${s.map((_,i)=>`<i class="${i?"":"on"}"></i>`).join("")}</div><button id="pv" aria-label="Previous">${ic("prev")}</button><button id="nx" aria-label="Next">${ic("next")}</button></div>`;
+  h.onclick=e=>{const b=e.target.closest("[data-d]");if(b)openG(b.dataset.d)};
   si=0;const go=n=>{si=(n+s.length)%s.length;h.querySelectorAll(".sl").forEach((e,i)=>e.classList.toggle("on",i===si));h.querySelectorAll(".dots i").forEach((e,i)=>e.classList.toggle("on",i===si))};
   $("pv").onclick=()=>go(si-1);$("nx").onclick=()=>go(si+1);if(s.length>1)timer=setInterval(()=>go(si+1),5000);
 }
 function render(){
   navR();const q=$("q").value.trim().toLowerCase();
   const home=cat==="home"&&!q;$("top").style.display=home?"":"none";$("va").style.display=home&&games.length>6?"":"none";
-  let f=games.filter(g=>(cat==="home"||cat==="all"||g.category===cat)&&(!q||(g.title+" "+(g.desc||"")).toLowerCase().includes(q)));
+  let f=games.filter(g=>(cat==="home"||cat==="all"||g.category===cat)&&(!q||(g.title+" "+(g.desc||"")+" "+(g.developer||"")).toLowerCase().includes(q)));
   $("ttl").innerHTML=q?ic("search")+"Search results":home?ic("flame")+"Popular Games":cat==="all"?ic("grid")+"All Games":ic(CI[cat])+cat;
   if(home)f=f.slice().sort((a,b)=>(parseFloat(b.rating)||0)-(parseFloat(a.rating)||0)).slice(0,6);
   $("list").innerHTML=!loaded?"":f.length?f.map(card).join(""):`<div class="empty">${ic("pad")}${games.length?"Is section mein abhi koi game nahi hai.":"Games jaldi aa rahe hain. Wapas check karna!"}</div>`;
 }
+
+/* ---- Play Store style details page ---- */
+function openG(id){
+  const g=games.find(x=>x.id===id);if(!g)return;
+  const im=okImg(g.icon),u=okUrl(g.url)||"#",shots=(Array.isArray(g.screenshots)?g.screenshots:[]).map(okImg).filter(Boolean);
+  const st=[];
+  if(g.rating)st.push(`<b>${esc(g.rating)}${ic("star","f")}</b><small>Rating</small>`);
+  if(g.size)st.push(`<b>${esc(g.size)} MB</b><small>Size</small>`);
+  if(g.downloads)st.push(`<b>${esc(g.downloads)}</b><small>Downloads</small>`);
+  if(g.ageRating)st.push(`<b>${esc(g.ageRating)}</b><small>Age rating</small>`);
+  const about=g.fullDesc||g.desc||"";
+  const row=(k,v)=>v?`<div><span>${k}</span><b>${v}</b></div>`:"";
+  const info=[row("Version",esc(g.version)),row("Updated on",esc(dday(g.updatedAt||g.createdAt))),row("Requires Android",esc(g.minAndroid)),row("Category",esc(g.category)),row("Developer",esc(g.developer)),
+    g.email?row("Contact",`<a href="mailto:${esc(g.email)}">${esc(g.email)}</a>`):"",
+    okUrl(g.privacyUrl)?row("Privacy policy",`<a href="${esc(g.privacyUrl)}" target="_blank" rel="noopener noreferrer">View</a>`):""].join("");
+  $("gb").innerHTML=`<div class="bar"><button id="gcl" aria-label="Close">${ic("x")}</button></div><div class="in">
+  <div class="gh">${im?`<img class="gi" src="${esc(im)}" alt="">`:`<div class="gi" style="background:${grad(g.title)}">${ic(gic(g))}</div>`}<div style="min-width:0"><h2>${esc(g.title)}</h2>${g.developer?`<div class="dv">${esc(g.developer)}</div>`:""}<div class="ct">${esc(g.category||"")}</div></div></div>
+  ${st.length?`<div class="gs">${st.map(x=>`<div>${x}</div>`).join("")}</div>`:`<div style="height:18px"></div>`}
+  <a class="dn" href="${esc(u)}" target="_blank" rel="noopener noreferrer">${ic("down")}Download APK</a>
+  ${shots.length?`<div class="shs" id="gsh" style="margin-top:22px">${shots.map(x=>`<img src="${esc(x)}" alt="Screenshot" loading="lazy">`).join("")}</div>`:""}
+  ${about?`<h5>About this game</h5><p class="ab">${esc(about)}</p>`:""}
+  ${g.whatsNew?`<h5>What’s new</h5><p class="ab">${esc(g.whatsNew)}</p>`:""}
+  ${info?`<h5>App info</h5><div class="inf">${info}</div>`:""}</div>`;
+  $("gd").classList.add("on");document.body.style.overflow="hidden";$("gb").scrollTop=0;$("gcl").focus();
+}
+function closeG(){$("gd").classList.remove("on");$("lb").classList.remove("on");document.body.style.overflow=""}
+$("gd").onclick=e=>{if(e.target===$("gd")||e.target.closest("#gcl"))return closeG();
+  const im=e.target.closest("#gsh img");if(im){$("lb").firstElementChild.src=im.src;$("lb").classList.add("on")}};
+$("lb").onclick=()=>$("lb").classList.remove("on");
+addEventListener("keydown",e=>{if(e.key!=="Escape")return;if($("lb").classList.contains("on"))$("lb").classList.remove("on");else closeG()});
+$("list").onclick=e=>{if(e.target.closest("a"))return;const c=e.target.closest(".card");if(c)openG(c.dataset.id)};
+$("list").onkeydown=e=>{if(e.key==="Enter"&&e.target.classList.contains("card"))openG(e.target.dataset.id)};
 $("q").addEventListener("input",render);
 render();heroR();
 const FB={apiKey:"AIzaSyA3eGo3NbyEZYUT8tTpsug7Mbnf7vOhfAc",authDomain:"rushhedi-98156.firebaseapp.com",projectId:"rushhedi-98156",storageBucket:"rushhedi-98156.firebasestorage.app",messagingSenderId:"649039947679",appId:"1:649039947679:web:d568d764f092eb541abfaa"};
