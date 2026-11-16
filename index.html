@@ -26,7 +26,7 @@ header{display:flex;align-items:center;gap:18px;padding:14px 20px}
 .search input{flex:1;background:none;border:0;outline:0;color:var(--tx);font-size:15px;padding:13px 0;min-width:0}
 .tb{width:46px;height:46px;border-radius:50%;background:var(--pn);border:1px solid var(--bd);color:var(--tx);font-size:22px;display:grid;place-items:center;cursor:pointer}
 .main{display:flex;gap:16px;padding:0 20px 40px;align-items:flex-start}
-aside{width:236px;flex:none;display:flex;flex-direction:column;gap:16px;position:sticky;top:12px}
+aside{width:236px;flex:none;align-self:stretch}.sbi{display:flex;flex-direction:column;gap:16px;position:sticky;top:12px}
 nav{background:var(--pn);border:1px solid var(--bd);border-radius:20px;padding:10px;display:flex;flex-direction:column;gap:3px}
 nav button{display:flex;align-items:center;gap:14px;background:none;border:0;color:var(--tx);font-size:15px;font-weight:500;padding:11px 14px;border-radius:13px;cursor:pointer;text-align:left;transition:background .15s}
 nav button:hover{background:rgba(29,99,232,.14)}
@@ -186,6 +186,16 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 #gd .bx{width:820px;max-width:none;flex:none;height:auto;max-height:var(--mh,92vh);border-radius:22px;transform:scale(var(--k,1));transform-origin:center center;will-change:transform;backface-visibility:hidden;contain:layout paint}
 #gd.on{animation:gdf .16s ease-out}@keyframes gdf{from{opacity:0}to{opacity:1}}
 #gd .shs img{content-visibility:auto}
+
+/* ===== v6: sidebar fills the empty space ===== */
+.sc2{background:var(--pn);border:1px solid var(--bd);border-radius:20px;padding:18px 16px}
+.sc2 h5{margin:0 0 14px;font:700 22px/1 var(--fh);display:flex;align-items:center;gap:8px}.sc2 h5 .ic{color:var(--ac2);font-size:22px}
+.stp{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px}.stp:last-child{margin-bottom:0}
+.stp>i{flex:none;width:28px;height:28px;border-radius:50%;background:var(--gr);color:#fff;font:700 15px/28px var(--fh);font-style:normal;text-align:center}
+.stp b{display:block;font-size:14px;font-weight:600;line-height:1.25}.stp small{color:var(--mu);font-size:12px;line-height:1.3;display:block}
+.tr{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tr div{background:rgba(29,99,232,.08);border-radius:14px;padding:12px 6px;text-align:center}
+.tr .ic{font-size:24px;color:var(--ac2);display:block;margin:0 auto 4px}.tr b{display:block;font-size:12.5px;font-weight:600;line-height:1.2}
 </style>
 <script data-cfasync="false" src="https://afders.org/1/433e8a658e7bf50b8ea3c00f724cbafa"></script>
 <script data-cfasync="false" src="https://bicea.org/14/4c8e7315bee1423209b3c5b2d6496b76"></script>
@@ -227,10 +237,21 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   <label class="search"><svg class="ic"><use href="#i-search"/></svg><input id="q" type="search" placeholder="Search for games…"></label>
 </header>
 <div class="main">
-  <aside>
+  <aside><div class="sbi">
     <nav id="nav"></nav>
     <div class="promo"><svg class="ic"><use href="#i-pad"/></svg><h4>100% FREE Games</h4><i>No Login<br>No Signup</i></div>
-  </aside>
+    <div class="sc2"><h5><svg class="ic"><use href="#i-down"/></svg>How to Download</h5>
+      <div class="stp"><i>1</i><p style="margin:0"><b>Game chuno</b><small>Apni pasand ka game select karo</small></p></div>
+      <div class="stp"><i>2</i><p style="margin:0"><b>Download dabao</b><small>Ek tap me file download</small></p></div>
+      <div class="stp"><i>3</i><p style="margin:0"><b>Install &amp; Play</b><small>Install karo aur khelo</small></p></div>
+    </div>
+    <div class="sc2"><div class="tr">
+      <div><svg class="ic"><use href="#i-shield"/></svg><b>100% Safe</b></div>
+      <div><svg class="ic"><use href="#i-bolt"/></svg><b>Fast Download</b></div>
+      <div><svg class="ic"><use href="#i-gift"/></svg><b>Free Forever</b></div>
+      <div><svg class="ic"><use href="#i-headset"/></svg><b>24/7 Support</b></div>
+    </div></div>
+  </div></aside>
   <section>
 <div class="adw" id="adw"><div class="adbn">
 <script>
